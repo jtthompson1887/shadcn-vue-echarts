@@ -36,7 +36,7 @@ export interface ChartProps {
     maskColor?: string
   }
   group?: string
-  connectGroup?: boolean
+  connectGroup?: boolean | string
   events?: Record<string, (params: any) => void>
   minHeight?: number | string
   debug?: boolean

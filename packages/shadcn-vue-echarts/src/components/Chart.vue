@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, shallowRef } from 'vue'
 import type { EChartsOption } from 'echarts'
 import { useECharts } from '../composables/useECharts'
 import type { ChartProps, ChartExpose } from '../types'
 
-const props = withDefaults(defineProps<ChartProps>(), {
+const props = withDefaults(defineProps<Omit<ChartProps, 'option'> & { option?: EChartsOption }>(), {
+  option: () => ({}),
   renderer: 'canvas',
   autoresize: true,
   initOnNonZeroSize: true,
