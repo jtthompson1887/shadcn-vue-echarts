@@ -1,6 +1,5 @@
 import type { ShadcnTokens } from '../types'
 import { readCssVar } from './cssVars'
-import { resolveColor } from './resolveColor'
 
 const DEFAULT_CHART_COLORS = [
   '#ef4444',
