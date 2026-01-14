@@ -4,12 +4,10 @@ import {
   watch,
   onMounted,
   onUnmounted,
-  type Ref,
-  type ShallowRef
+  type Ref
 } from 'vue'
 import type { EChartsOption } from 'echarts'
 import type { ChartProps } from '../types'
-import { readShadcnTokens } from '../theme/shadcnTokens'
 import { withShadcnDefaults } from '../theme/withShadcnDefaults'
 import { createEChartsTheme } from '../theme/createEChartsTheme'
 import { isDOMAvailable } from '../utils/ssr'

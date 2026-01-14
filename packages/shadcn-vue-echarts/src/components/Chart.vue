@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, shallowRef, computed, defineExpose } from 'vue'
+import { ref, computed, watch } from 'vue'
 import type { EChartsOption } from 'echarts'
 import { useECharts } from '../composables/useECharts'
 import type { ChartProps, ChartExpose } from '../types'
@@ -20,24 +20,22 @@ const props = withDefaults(defineProps<ChartProps>(), {
 })
 
 const emit = defineEmits<{
-  ready: [instance: any]
+  ready: [instance: unknown]
   error: [error: Error]
   rendered: []
 }>()
 
 const el = ref<HTMLElement | null>(null)
-const optionRef = shallowRef(props.option)
-const themeModeRef = ref(props.themeMode)
 
-const { instance, init, setOption: setChartOption, resize, dispose } = useECharts(
+const { instance, setOption: setChartOption, resize, dispose } = useECharts(
   el,
-  optionRef,
+  computed(() => props.option),
   {
     echarts: props.echarts,
     renderer: props.renderer,
     autoresize: props.autoresize,
     initOnNonZeroSize: props.initOnNonZeroSize,
-    themeMode: themeModeRef,
+    themeMode: props.themeMode,
     themeStrategy: props.themeStrategy,
     themeName: props.themeName,
     themeObject: props.themeObject,
@@ -53,15 +51,6 @@ const { instance, init, setOption: setChartOption, resize, dispose } = useEChart
   }
 )
 
-// Watch for prop changes
-const stopWatchOption = () => {
-  optionRef.value = props.option
-}
-
-const stopWatchThemeMode = () => {
-  themeModeRef.value = props.themeMode
-}
-
 const containerStyle = computed(() => {
   const minHeightValue = typeof props.minHeight === 'number'
     ? `${props.minHeight}px`
@@ -72,10 +61,12 @@ const containerStyle = computed(() => {
 })
 
 // Expose component methods
-const getInstance = (): any | null => instance.value
-const setOption = (option: EChartsOption, opts?: { notMerge?: boolean; lazyUpdate?: boolean }) => {
-  optionRef.value = option
-  setChartOption(option)
+const getInstance = (): unknown => instance.value
+
+const setOption = (option: EChartsOption | undefined): void => {
+  if (option) {
+    setChartOption(option)
+  }
 }
 
 defineExpose<ChartExpose>({
@@ -85,25 +76,7 @@ defineExpose<ChartExpose>({
   dispose
 })
 
-// Emit ready when instance is available
-const unsubscribeReady = () => {
-  if (instance.value) {
-    emit('ready', instance.value)
-  }
-}
-
-// Update watchers
-watch([() => props.option, () => props.themeMode], ([newOption, newThemeMode]) => {
-  if (newOption !== optionRef.value) {
-    optionRef.value = newOption
-  }
-  if (newThemeMode !== themeModeRef.value) {
-    themeModeRef.value = newThemeMode
-  }
-}, { deep: false })
-
-import { watch } from 'vue'
-
+// Watch for prop changes and emit ready event
 watch(instance, (newInstance) => {
   if (newInstance) {
     emit('ready', newInstance)
