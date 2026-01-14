@@ -53,7 +53,7 @@ jobs:
         uses: actions/configure-pages@v4
         with:
           enablement: true
-          token: ${{ secrets.PAGES_TOKEN }}
+          token: ${{ secrets.PAGES_TOKEN || github.token }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -71,4 +71,4 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
         with:
-          github_token: ${{ secrets.PAGES_TOKEN }}
+          github_token: ${{ secrets.PAGES_TOKEN || github.token }}
