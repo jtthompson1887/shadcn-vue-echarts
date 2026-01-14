@@ -1,4 +1,4 @@
-import { ref, watch, onMounted, onUnmounted, type Ref } from 'vue'
+import { ref, watch, onMounted, onUnmounted, shallowRef, type Ref } from 'vue'
 import { readShadcnTokens } from '../theme/shadcnTokens'
 import { isDOMAvailable } from '../utils/ssr'
 import type { ShadcnTokens, ChartThemeMode } from '../types'

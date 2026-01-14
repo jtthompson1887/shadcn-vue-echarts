@@ -7,25 +7,43 @@ export function resolveColor(value?: string, alpha?: number): string | undefined
 
   const v = String(value).trim()
 
-  // If already a hex, rgb, rgba, hsl or hsla string
-  if (/^(#|rgb|rgba|hsl|hsla)/i.test(v)) {
+  // Handle hex colors with alpha conversion
+  if (v.startsWith('#')) {
     if (alpha != null) {
-      if (/^hsl\(/i.test(v)) {
-        // hsl(...) -> hsla(...) by replacing ) with , alpha)
-        return v.replace(/\)$/, `, ${alpha})`)
-      }
-      if (/^hsla\(/i.test(v)) {
-        // Replace existing hsla alpha with new one
-        return v.replace(/hsla\(([^,]+),\s*([^,]+),\s*([^,]+),\s*[^)]+\)/, `hsla($1, $2, $3, ${alpha})`)
-      }
-      if (/^rgb\(/i.test(v) && !/a/.test(v)) {
-        // rgb(...) -> rgba(...)
-        return v.replace(/\)$/, `, ${alpha})`)
-      }
-      if (/^rgba\(/i.test(v)) {
-        // Replace existing rgba alpha
-        return v.replace(/rgba\(([^,]+),\s*([^,]+),\s*([^,]+),\s*[^)]+\)/, `rgba($1, $2, $3, ${alpha})`)
-      }
+      const hex = v.slice(1)
+      const r = parseInt(hex.slice(0, 2), 16)
+      const g = parseInt(hex.slice(2, 4), 16)
+      const b = parseInt(hex.slice(4, 6), 16)
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`
+    }
+    return v
+  }
+
+  // Handle rgb colors with alpha conversion
+  if (v.startsWith('rgb(')) {
+    if (alpha != null && !v.includes('rgba')) {
+      // rgb(...) -> rgba(...) by replacing ) with , alpha)
+      return v.replace(/rgb\(/, 'rgba(').replace(/\)$/, `, ${alpha})`)
+    }
+    if (alpha != null && v.includes('rgba')) {
+      // Replace existing rgba alpha
+      return v.replace(/rgba\(([^,]+),\s*([^,]+),\s*([^,]+),\s*[^)]+\)/, `rgba($1, $2, $3, ${alpha})`)
+    }
+    return v
+  }
+
+  // Handle hsl colors with alpha conversion
+  if (v.startsWith('hsl(')) {
+    if (alpha != null) {
+      return v.replace(/hsl\(/, 'hsla(').replace(/\)$/, `, ${alpha})`)
+    }
+    return v
+  }
+
+  // Handle hsla colors with alpha replacement
+  if (v.startsWith('hsla(')) {
+    if (alpha != null) {
+      return v.replace(/hsla\(([^,]+),\s*([^,]+),\s*([^,]+),\s*[^)]+\)/, `hsla($1, $2, $3, ${alpha})`)
     }
     return v
   }

@@ -6,8 +6,11 @@ export function createEChartsTheme(tokens: ShadcnTokens): object {
   const splitLineColor = resolveColor(tokens.border, 0.35)
   const bgColor = resolveColor(tokens.background)
 
+  // Convert chart colors from raw HSL components to CSS colors
+  const chartColors = tokens.chart.map(color => resolveColor(color) || color)
+
   return {
-    color: tokens.chart,
+    color: chartColors,
     backgroundColor: bgColor,
     textStyle: {
       color: resolveColor(tokens.foreground),
@@ -281,6 +284,30 @@ export function createEChartsTheme(tokens: ShadcnTokens): object {
     markPoint: {
       label: {
         color: resolveColor(tokens.popoverForeground)
+      }
+    },
+    parallel: {
+      itemStyle: {
+        borderColor: borderColor,
+        borderWidth: 1
+      }
+    },
+    timeAxis: {
+      axisLine: {
+        show: true,
+        lineStyle: {
+          color: borderColor
+        }
+      },
+      axisLabel: {
+        show: true,
+        color: resolveColor(tokens.mutedForeground)
+      },
+      splitLine: {
+        show: false,
+        lineStyle: {
+          color: splitLineColor
+        }
       }
     }
   }
