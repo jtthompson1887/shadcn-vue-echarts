@@ -46,8 +46,8 @@ jobs:
         run: |
           mkdir -p deploy
           cp -r docs/.vitepress/dist/* deploy/
-          mkdir -p deploy/examples
-          cp -r apps/playground/dist/* deploy/examples/
+          mkdir -p deploy/examples/playground
+          cp -r apps/playground/dist/* deploy/examples/playground/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
