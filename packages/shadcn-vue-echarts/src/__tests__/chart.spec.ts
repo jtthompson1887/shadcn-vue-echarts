@@ -28,6 +28,16 @@ vi.mock('echarts', () => ({
   default: mockECharts,
 }))
 
+// Helper function to mount Chart with echarts mock
+function mountChart(props = {}) {
+  return mount(Chart, {
+    props: {
+      echarts: mockECharts,
+      ...props,
+    },
+  })
+}
+
 describe('Chart Component', () => {
   let mockInstance: MockInstance
 
@@ -57,18 +67,18 @@ describe('Chart Component', () => {
 
   describe('Component Mounting', () => {
     it('should mount successfully', () => {
-      const wrapper = mount(Chart)
+      const wrapper = mountChart()
       expect(wrapper.exists()).toBe(true)
     })
 
     it('should render a div container', () => {
-      const wrapper = mount(Chart)
+      const wrapper = mountChart()
       const div = wrapper.find('div')
       expect(div.exists()).toBe(true)
     })
 
     it('should apply minHeight style', () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           minHeight: 400,
         },
@@ -78,7 +88,7 @@ describe('Chart Component', () => {
     })
 
     it('should apply class and style props', () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           class: 'custom-class',
           style: { padding: '10px' },
@@ -93,7 +103,7 @@ describe('Chart Component', () => {
   describe('Option Props', () => {
     it('should accept option prop', () => {
       const option = { xAxis: { type: 'category' } }
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           option,
         },
@@ -102,13 +112,13 @@ describe('Chart Component', () => {
     })
 
     it('should handle empty option', async () => {
-      const wrapper = mount(Chart)
+      const wrapper = mountChart()
       await flushPromises()
       expect(wrapper.exists()).toBe(true)
     })
 
     it('should update on option prop change', async () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           option: { color: ['#FF0000'] },
         },
@@ -127,7 +137,7 @@ describe('Chart Component', () => {
   describe('Events', () => {
     it('should handle custom events prop', async () => {
       const clickHandler = vi.fn()
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           events: {
             click: clickHandler,
@@ -145,7 +155,7 @@ describe('Chart Component', () => {
       const handler1 = vi.fn()
       const handler2 = vi.fn()
 
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           events: { click: handler1 },
         },
@@ -165,7 +175,7 @@ describe('Chart Component', () => {
     })
 
     it('should emit ready event when chart initializes', async () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           option: { series: [] },
         },
@@ -177,7 +187,7 @@ describe('Chart Component', () => {
     })
 
     it('should cleanup event listeners on unmount', async () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           events: {
             click: vi.fn(),
@@ -195,7 +205,7 @@ describe('Chart Component', () => {
 
   describe('Expose Methods', () => {
     it('should expose getInstance method', async () => {
-      const wrapper = mount(Chart)
+      const wrapper = mountChart()
       await flushPromises()
 
       const instance = wrapper.vm as any
@@ -204,7 +214,7 @@ describe('Chart Component', () => {
     })
 
     it('should expose setOption method', async () => {
-      const wrapper = mount(Chart)
+      const wrapper = mountChart()
       await flushPromises()
 
       const instance = wrapper.vm as any
@@ -218,7 +228,7 @@ describe('Chart Component', () => {
     })
 
     it('should expose resize method', async () => {
-      const wrapper = mount(Chart)
+      const wrapper = mountChart()
       await flushPromises()
 
       const instance = wrapper.vm as any
@@ -228,7 +238,7 @@ describe('Chart Component', () => {
     })
 
     it('should expose dispose method', async () => {
-      const wrapper = mount(Chart)
+      const wrapper = mountChart()
       await flushPromises()
 
       const instance = wrapper.vm as any
@@ -240,7 +250,7 @@ describe('Chart Component', () => {
 
   describe('Loading State', () => {
     it('should show loading with boolean', async () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           loading: true,
         },
@@ -252,7 +262,7 @@ describe('Chart Component', () => {
     })
 
     it('should hide loading when set to false', async () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           loading: true,
         },
@@ -266,7 +276,7 @@ describe('Chart Component', () => {
     })
 
     it('should handle loading object with text', async () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           loading: {
             text: 'Loading data...',
@@ -280,7 +290,7 @@ describe('Chart Component', () => {
     })
 
     it('should handle loading object with color', async () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           loading: {
             text: 'Loading...',
@@ -297,7 +307,7 @@ describe('Chart Component', () => {
 
   describe('Renderer Prop', () => {
     it('should accept renderer prop', () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           renderer: 'canvas',
         },
@@ -306,7 +316,7 @@ describe('Chart Component', () => {
     })
 
     it('should use renderer when initializing', async () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           renderer: 'svg',
         },
@@ -322,7 +332,7 @@ describe('Chart Component', () => {
 
   describe('Theme Props', () => {
     it('should accept themeMode prop', () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           themeMode: 'dark',
         },
@@ -331,7 +341,7 @@ describe('Chart Component', () => {
     })
 
     it('should accept themeName prop', () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           themeName: 'custom-theme',
         },
@@ -341,7 +351,7 @@ describe('Chart Component', () => {
 
     it('should accept themeObject prop', () => {
       const theme = { color: ['#FF0000'] }
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           themeObject: theme,
         },
@@ -350,7 +360,7 @@ describe('Chart Component', () => {
     })
 
     it('should accept themeStrategy prop', () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           themeStrategy: 'echartsTheme',
         },
@@ -361,7 +371,7 @@ describe('Chart Component', () => {
 
   describe('Group/Sync Props', () => {
     it('should accept group prop', () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           group: 'chart-group',
         },
@@ -370,7 +380,7 @@ describe('Chart Component', () => {
     })
 
     it('should accept connectGroup prop', () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           connectGroup: 'connected-charts',
         },
@@ -381,7 +391,7 @@ describe('Chart Component', () => {
 
   describe('Autoresize', () => {
     it('should accept autoresize prop', () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           autoresize: true,
         },
@@ -390,7 +400,7 @@ describe('Chart Component', () => {
     })
 
     it('should accept initOnNonZeroSize prop', () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           initOnNonZeroSize: true,
         },
@@ -401,7 +411,7 @@ describe('Chart Component', () => {
 
   describe('Update Mode', () => {
     it('should accept notMerge prop', () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           notMerge: true,
         },
@@ -410,7 +420,7 @@ describe('Chart Component', () => {
     })
 
     it('should accept lazyUpdate prop', () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           lazyUpdate: true,
         },
@@ -419,7 +429,7 @@ describe('Chart Component', () => {
     })
 
     it('should accept watch prop', () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           watch: 'deep',
         },
@@ -431,7 +441,7 @@ describe('Chart Component', () => {
   describe('Custom Echarts Instance', () => {
     it('should accept echarts prop', () => {
       const customEcharts = { init: vi.fn() }
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           echarts: customEcharts,
         },
@@ -442,7 +452,7 @@ describe('Chart Component', () => {
 
   describe('Cleanup', () => {
     it('should dispose chart on unmount', async () => {
-      const wrapper = mount(Chart)
+      const wrapper = mountChart()
       await flushPromises()
 
       wrapper.unmount()
@@ -451,7 +461,7 @@ describe('Chart Component', () => {
     })
 
     it('should cleanup event listeners on unmount', async () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           events: {
             click: vi.fn(),
@@ -474,7 +484,7 @@ describe('Chart Component', () => {
         throw new Error('Init failed')
       })
 
-      const wrapper = mount(Chart)
+      const wrapper = mountChart()
 
       await flushPromises()
 
@@ -485,7 +495,7 @@ describe('Chart Component', () => {
 
   describe('Debug Mode', () => {
     it('should accept debug prop', () => {
-      const wrapper = mount(Chart, {
+      const wrapper = mountChart({
         props: {
           debug: true,
         },

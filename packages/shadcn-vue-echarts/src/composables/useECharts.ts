@@ -266,39 +266,39 @@ export function useECharts(
   )
 
   onMounted(async () => {
-    if (initOnNonZeroSize && elRef.value) {
-      // Check if already has size, if yes init immediately
-      const { width, height } = elRef.value.getBoundingClientRect()
-      if (width > 0 && height > 0) {
-        await init()
-        if (autoresize) startResize()
-        return
-      }
-      
-      // Poll until container has size, but with timeout fallback
-      let attempts = 0
-      const maxAttempts = 100
-      const checkSize = async (): Promise<boolean> => {
-        if (!elRef.value) return false
+    try {
+      if (initOnNonZeroSize && elRef.value) {
+        // Check if already has size, if yes init immediately
         const { width, height } = elRef.value.getBoundingClientRect()
         if (width > 0 && height > 0) {
-          return true
-        } else if (attempts < maxAttempts) {
-          attempts++
-          await new Promise(resolve => requestAnimationFrame(resolve))
-          return await checkSize()
+          await init()
+          if (autoresize) startResize()
+          return
         }
-        return false
+        
+        // Poll briefly for container size (max 100ms with 10ms intervals = 10 attempts)
+        let attempts = 0
+        const maxAttempts = 10
+        while (attempts < maxAttempts) {
+          const { width, height } = elRef.value.getBoundingClientRect()
+          if (width > 0 && height > 0) {
+            break
+          }
+          attempts++
+          // Use short setTimeout for better test compatibility
+          await new Promise(resolve => setTimeout(resolve, 10))
+        }
+        
+        // Always init whether size was found or not
+        await init()
+        if (autoresize) startResize()
+      } else {
+        await init()
+        if (autoresize) startResize()
       }
-      
-      // Wait for size or timeout
-      await checkSize()
-      // Always init even if size check failed (e.g., in test environments)
-      await init()
-      if (autoresize) startResize()
-    } else {
-      await init()
-      if (autoresize) startResize()
+    } catch (err) {
+      if (debug) console.error('[Chart] onMounted error:', err)
+      throw err
     }
   })
 
