@@ -18,35 +18,36 @@ export function readShadcnTokens(el?: Element): ShadcnTokens {
 
   if (!source) {
     return {
-      background: '#ffffff',
-      foreground: '#000000',
-      muted: '#f5f5f5',
-      mutedForeground: '#666666',
-      card: '#ffffff',
-      cardForeground: '#000000',
-      popover: '#ffffff',
-      popoverForeground: '#000000',
-      border: '#e5e5e5',
-      ring: '#3b82f6',
+      background: '0 0% 100%',
+      foreground: '0 0% 0%',
+      muted: '210 40% 96%',
+      mutedForeground: '215.4 16.3% 46.9%',
+      card: '0 0% 100%',
+      cardForeground: '0 0% 0%',
+      popover: '0 0% 100%',
+      popoverForeground: '0 0% 0%',
+      border: '214.3 31.8% 91.4%',
+      ring: '222.2 84% 4.9%',
       chart: DEFAULT_CHART_COLORS
     }
   }
 
-  const background = resolveColor(readCssVar(source, '--background') || '')
-  const foreground = resolveColor(readCssVar(source, '--foreground') || '')
-  const muted = resolveColor(readCssVar(source, '--muted') || '')
-  const mutedForeground = resolveColor(readCssVar(source, '--muted-foreground') || '')
-  const card = resolveColor(readCssVar(source, '--card') || '')
-  const cardForeground = resolveColor(readCssVar(source, '--card-foreground') || '')
-  const popover = resolveColor(readCssVar(source, '--popover') || '')
-  const popoverForeground = resolveColor(readCssVar(source, '--popover-foreground') || '')
-  const border = resolveColor(readCssVar(source, '--border') || '')
-  const ring = resolveColor(readCssVar(source, '--ring') || '')
+  // Read raw HSL component values (without hsl() wrapper)
+  const background = readCssVar(source, '--background')?.trim() || '0 0% 100%'
+  const foreground = readCssVar(source, '--foreground')?.trim() || '0 0% 0%'
+  const muted = readCssVar(source, '--muted')?.trim() || '210 40% 96%'
+  const mutedForeground = readCssVar(source, '--muted-foreground')?.trim() || '215.4 16.3% 46.9%'
+  const card = readCssVar(source, '--card')?.trim() || '0 0% 100%'
+  const cardForeground = readCssVar(source, '--card-foreground')?.trim() || '0 0% 0%'
+  const popover = readCssVar(source, '--popover')?.trim() || '0 0% 100%'
+  const popoverForeground = readCssVar(source, '--popover-foreground')?.trim() || '0 0% 0%'
+  const border = readCssVar(source, '--border')?.trim() || '214.3 31.8% 91.4%'
+  const ring = readCssVar(source, '--ring')?.trim() || '222.2 84% 4.9%'
 
   const chart = Array.from({ length: 8 }, (_, i) => {
     const varName = `--chart-${i + 1}`
     const value = readCssVar(source, varName)
-    return value ? resolveColor(value) : DEFAULT_CHART_COLORS[i]
+    return value?.trim() || DEFAULT_CHART_COLORS[i]
   })
 
   return {
