@@ -5,7 +5,7 @@
   "type": "module",
   "sideEffects": false,
   "license": "MIT",
-  "author": "Your Name <you@example.com>",
+  "author": "Jordan Thompson <jtthompson1887@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/jtthompson1887/shadcn-vue-echarts.git"
