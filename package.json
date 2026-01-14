@@ -3,16 +3,20 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@8.0.0",
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "docs"
+  ],
   "scripts": {
-    "build": "pnpm -r build",
-    "test": "pnpm -r test",
-    "typecheck": "pnpm -r typecheck",
-    "lint": "pnpm -r lint",
+    "build": "npm --workspaces --if-present run build",
+    "test": "npm --workspaces --if-present run test",
+    "typecheck": "npm --workspaces --if-present run typecheck",
+    "lint": "npm --workspaces --if-present run lint",
     "format": "prettier --write \"**/*.{ts,tsx,vue,json,md}\"",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "pnpm build && pnpm test && changeset publish"
+    "release": "npm run build && npm run test && changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.0",

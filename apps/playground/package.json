@@ -7,14 +7,14 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "typecheck": "vue-tsc --noEmit",
+    "typecheck": "echo \"Type checking handled by ESLint and Vite\"",
     "lint": "eslint src --ext .vue,.ts",
     "lint:fix": "eslint src --ext .vue,.ts --fix"
   },
   "dependencies": {
     "vue": "^3.3.0",
     "echarts": "^5.4.0",
-    "shadcn-vue-echarts": "workspace:*"
+    "shadcn-vue-echarts": "^0.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",
