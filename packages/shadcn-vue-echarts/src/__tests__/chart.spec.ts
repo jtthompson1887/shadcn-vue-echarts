@@ -19,6 +19,8 @@ interface MockInstance {
 
 const mockECharts = {
   init: vi.fn(),
+  registerTheme: vi.fn(),
+  connect: vi.fn(),
   graphic: {
     LinearGradient: vi.fn((x1: number, y1: number, x2: number, y2: number, stops: unknown[]) => ({ type: 'linear', stops })),
   },
@@ -29,11 +31,12 @@ vi.mock('echarts', () => ({
 }))
 
 // Helper function to mount Chart with echarts mock
-function mountChart(props = {}) {
+function mountChart(config = {}) {
   return mount(Chart, {
+    ...config,
     props: {
       echarts: mockECharts,
-      ...props,
+      ...(config.props || {}),
     },
   })
 }

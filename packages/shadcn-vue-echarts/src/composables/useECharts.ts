@@ -90,11 +90,18 @@ export function useECharts(
   }
 
   const init = async () => {
+    console.log('[Chart] init called, instance=' + (instance.value ? 'set' : 'null'))
     if (instance.value) return
-    if (!isDOMAvailable() || !elRef.value) return
+    const domAvailable = isDOMAvailable()
+    if (!domAvailable || !elRef.value) {
+      console.error('[Chart] init skipped: domAvailable=' + domAvailable + ', elRef=' + (elRef.value ? 'set' : 'null'))
+      return
+    }
+    console.log('[Chart] init proceeding with ec.init')
 
     try {
       const ec = await loadECharts()
+      console.log('[Chart] loaded echarts, ec.init=' + (ec.init ? 'exists' : 'missing'))
 
       let theme: string | undefined
       if (themeStrategy === 'echartsTheme') {
@@ -279,8 +286,9 @@ export function useECharts(
         // Poll briefly for container size (max 100ms with 10ms intervals = 10 attempts)
         let attempts = 0
         const maxAttempts = 10
-        while (attempts < maxAttempts) {
-          const { width, height } = elRef.value.getBoundingClientRect()
+        while (attempts < maxAttempts && elRef.value) {
+          const element = elRef.value
+          const { width, height } = element.getBoundingClientRect()
           if (width > 0 && height > 0) {
             break
           }
@@ -289,15 +297,17 @@ export function useECharts(
           await new Promise(resolve => setTimeout(resolve, 10))
         }
         
-        // Always init whether size was found or not
-        await init()
-        if (autoresize) startResize()
+        // Always init whether size was found or not (if element still exists)
+        if (elRef.value) {
+          await init()
+          if (autoresize) startResize()
+        }
       } else {
         await init()
         if (autoresize) startResize()
       }
     } catch (err) {
-      if (debug) console.error('[Chart] onMounted error:', err)
+      console.error('[Chart] onMounted error:', err)
       throw err
     }
   })
