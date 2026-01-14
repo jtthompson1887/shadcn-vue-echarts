@@ -266,22 +266,30 @@ export function useECharts(
   )
 
   onMounted(async () => {
-    if (initOnNonZeroSize) {
-      // Poll until container has size
-      let attempts = 0
-      const maxAttempts = 100
-      const checkSize = () => {
-        if (!elRef.value) return
-        const { width, height } = elRef.value.getBoundingClientRect()
-        if (width > 0 && height > 0) {
-          init()
-          if (autoresize) startResize()
-        } else if (attempts < maxAttempts) {
-          attempts++
-          requestAnimationFrame(checkSize)
+    if (initOnNonZeroSize && elRef.value) {
+      // Check if already has size, if yes init immediately
+      const { width, height } = elRef.value.getBoundingClientRect()
+      if (width > 0 && height > 0) {
+        await init()
+        if (autoresize) startResize()
+      } else {
+        // Poll until container has size
+        let attempts = 0
+        const maxAttempts = 100
+        const checkSize = async () => {
+          if (!elRef.value) return
+          const { width, height } = elRef.value.getBoundingClientRect()
+          if (width > 0 && height > 0) {
+            await init()
+            if (autoresize) startResize()
+          } else if (attempts < maxAttempts) {
+            attempts++
+            await new Promise(resolve => requestAnimationFrame(resolve))
+            await checkSize()
+          }
         }
+        await checkSize()
       }
-      checkSize()
     } else {
       await init()
       if (autoresize) startResize()
