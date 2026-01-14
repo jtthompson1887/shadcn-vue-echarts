@@ -4,7 +4,7 @@ import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [vue()],
-  base: '/shadcn-vue-echarts/examples/',
+  base: '/shadcn-vue-echarts/examples/playground/',
   resolve: {
     alias: {
       '@': resolve(__dirname, './src')
