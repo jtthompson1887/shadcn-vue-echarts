@@ -1,6 +1,15 @@
 # shadcn-vue-echarts
 
-Vue 3 + ECharts wrapper with shadcn theming support.
+[![CI](https://github.com/jtthompson1887/shadcn-vue-echarts/actions/workflows/ci.yml/badge.svg)](https://github.com/jtthompson1887/shadcn-vue-echarts/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/shadcn-vue-echarts.svg)](https://www.npmjs.com/package/shadcn-vue-echarts)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Vue 3 + ECharts wrapper with automatic shadcn theming support.
+
+## 📚 Documentation & Examples
+
+- **[📖 Documentation](https://jtthompson1887.github.io/shadcn-vue-echarts/)** — Full guides and API reference
+- **[🎨 Live Examples](https://jtthompson1887.github.io/shadcn-vue-echarts/examples/)** — Interactive chart gallery with dark mode
 
 ## Features
 
@@ -15,7 +24,7 @@ Vue 3 + ECharts wrapper with shadcn theming support.
 ## Quick Start
 
 ```bash
-pnpm add shadcn-vue-echarts echarts
+npm install shadcn-vue-echarts echarts
 ```
 
 ```vue
@@ -36,38 +45,55 @@ const option = ref<EChartsOption>({
 </template>
 ```
 
+## Chart Types
+
+All ECharts chart types are supported with automatic theming:
+
+| Category | Charts |
+|----------|--------|
+| **Basic** | Line, Bar, Pie, Scatter |
+| **Advanced** | Radar, Funnel, Gauge, Heatmap |
+| **Financial** | Candlestick, K-line |
+| **Hierarchical** | Treemap, Sunburst |
+| **Polar** | Polar Bar, Polar Line |
+
 ## Documentation
 
-- [Getting Started](./docs/guide/getting-started.md)
-- [Theming Guide](./docs/guide/theming.md)
-- [SSR & Nuxt](./docs/guide/ssr.md)
-- [Recipes & Examples](./docs/guide/recipes.md)
+- [Getting Started](https://jtthompson1887.github.io/shadcn-vue-echarts/guide/getting-started)
+- [Theming Guide](https://jtthompson1887.github.io/shadcn-vue-echarts/guide/theming)
+- [SSR & Nuxt](https://jtthompson1887.github.io/shadcn-vue-echarts/guide/ssr)
+- [Recipes & Examples](https://jtthompson1887.github.io/shadcn-vue-echarts/guide/recipes)
 
 ## Packages
 
-- `shadcn-vue-echarts` — Main library
-- `playground` — Example application
-- `docs` — VitePress documentation
+| Package | Description |
+|---------|-------------|
+| `shadcn-vue-echarts` | Main library |
+| `playground` | Example application |
+| `docs` | VitePress documentation |
 
 ## Development
 
 ```bash
 # Install dependencies
-pnpm install
+npm install
 
 # Run playground
-cd apps/playground && pnpm dev
+npm run dev --workspace=playground
 
 # Run tests
-pnpm -r test
+npm run test
 
-# Build
-pnpm -r build
+# Build all
+npm run build
 
-# Lint & format
-pnpm -r lint
-pnpm format
+# Lint
+npm run lint
 ```
+
+## Contributing
+
+Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details.
 
 ## License
 

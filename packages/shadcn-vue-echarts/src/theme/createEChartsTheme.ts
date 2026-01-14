@@ -327,24 +327,6 @@ export function createEChartsTheme(tokens: ShadcnTokens): object {
         borderColor: borderColor,
         borderWidth: 1
       }
-    },
-    timeAxis: {
-      axisLine: {
-        show: true,
-        lineStyle: {
-          color: borderColor
-        }
-      },
-      axisLabel: {
-        show: true,
-        color: resolveColor(tokens.mutedForeground)
-      },
-      splitLine: {
-        show: false,
-        lineStyle: {
-          color: splitLineColor
-        }
-      }
     }
   }
 }

@@ -78,7 +78,7 @@ export function useECharts(
       echartsInstance = echartsLib
     } else {
       try {
-        const module = await import('echarts')
+        const module = await import('echarts') as { default?: unknown; [key: string]: unknown }
         echartsInstance = module.default || module
       } catch (err) {
         console.error('[Chart] Failed to load echarts:', err)
@@ -117,6 +117,11 @@ export function useECharts(
 
       const inst = ec.init(elRef.value, theme, { renderer })
 
+      if (!inst) {
+        console.error('[Chart] ec.init returned undefined')
+        return
+      }
+
       if (group) {
         inst.group = group
         if (connectGroup) {
@@ -140,6 +145,14 @@ export function useECharts(
         notMerge: updateMode === 'replace',
         lazyUpdate
       })
+
+      // Apply initial loading state
+      if (loading === true) {
+        inst.showLoading()
+      } else if (typeof loading === 'object' && loading) {
+        const { text, color, maskColor } = loading
+        inst.showLoading('default', { text, textColor: color, maskColor })
+      }
 
       if (debug) console.log('[Chart] Initialized')
     } catch (err) {
