@@ -272,24 +272,30 @@ export function useECharts(
       if (width > 0 && height > 0) {
         await init()
         if (autoresize) startResize()
-      } else {
-        // Poll until container has size
-        let attempts = 0
-        const maxAttempts = 100
-        const checkSize = async () => {
-          if (!elRef.value) return
-          const { width, height } = elRef.value.getBoundingClientRect()
-          if (width > 0 && height > 0) {
-            await init()
-            if (autoresize) startResize()
-          } else if (attempts < maxAttempts) {
-            attempts++
-            await new Promise(resolve => requestAnimationFrame(resolve))
-            await checkSize()
-          }
-        }
-        await checkSize()
+        return
       }
+      
+      // Poll until container has size, but with timeout fallback
+      let attempts = 0
+      const maxAttempts = 100
+      const checkSize = async (): Promise<boolean> => {
+        if (!elRef.value) return false
+        const { width, height } = elRef.value.getBoundingClientRect()
+        if (width > 0 && height > 0) {
+          return true
+        } else if (attempts < maxAttempts) {
+          attempts++
+          await new Promise(resolve => requestAnimationFrame(resolve))
+          return await checkSize()
+        }
+        return false
+      }
+      
+      // Wait for size or timeout
+      await checkSize()
+      // Always init even if size check failed (e.g., in test environments)
+      await init()
+      if (autoresize) startResize()
     } else {
       await init()
       if (autoresize) startResize()

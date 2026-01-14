@@ -182,6 +182,42 @@ export function createEChartsTheme(tokens: ShadcnTokens): object {
         }
       }
     },
+    angleAxis: {
+      axisLine: {
+        show: true,
+        lineStyle: {
+          color: borderColor
+        }
+      },
+      axisLabel: {
+        show: true,
+        color: resolveColor(tokens.mutedForeground)
+      },
+      splitLine: {
+        show: true,
+        lineStyle: {
+          color: splitLineColor
+        }
+      }
+    },
+    radiusAxis: {
+      axisLine: {
+        show: true,
+        lineStyle: {
+          color: borderColor
+        }
+      },
+      axisLabel: {
+        show: true,
+        color: resolveColor(tokens.mutedForeground)
+      },
+      splitLine: {
+        show: true,
+        lineStyle: {
+          color: splitLineColor
+        }
+      }
+    },
     radar: {
       itemStyle: {
         borderWidth: 1
