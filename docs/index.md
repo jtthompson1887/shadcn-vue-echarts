@@ -13,7 +13,7 @@ hero:
       text: View on GitHub
       link: https://github.com/jtthompson1887/shadcn-vue-echarts
   image:
-    src: /logo.svg
+    src: /logo.png
     alt: shadcn-vue-echarts
 features:
   - icon: 🎨
