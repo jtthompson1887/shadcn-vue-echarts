@@ -1,5 +1,5 @@
 {
-  "name": "shadcn-vue-echarts",
+  "name": "@jtthompson1887/shadcn-vue-echarts",
   "version": "0.1.0",
   "description": "Vue 3 ECharts wrapper with shadcn theming",
   "type": "module",
@@ -21,6 +21,9 @@
     "theming",
     "tailwind"
   ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
