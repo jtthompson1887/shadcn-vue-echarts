@@ -4,6 +4,10 @@ export default defineConfig({
   title: 'shadcn-vue-echarts',
   description: 'Vue 3 ECharts wrapper with shadcn theming',
   base: '/shadcn-vue-echarts/',
+  head: [
+    ['link', { rel: 'icon', href: '/favicon.ico' }],
+    ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }]
+  ],
   themeConfig: {
     nav: [
       { text: 'Guide', link: '/guide/' },
