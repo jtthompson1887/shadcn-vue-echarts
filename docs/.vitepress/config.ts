@@ -5,8 +5,8 @@ export default defineConfig({
   description: 'Vue 3 ECharts wrapper with shadcn theming',
   base: '/shadcn-vue-echarts/',
   head: [
-    ['link', { rel: 'icon', href: '/favicon.ico' }],
-    ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }]
+    ['link', { rel: 'icon', href: '/shadcn-vue-echarts/favicon.ico' }],
+    ['link', { rel: 'icon', type: 'image/png', href: '/shadcn-vue-echarts/favicon.png' }]
   ],
   themeConfig: {
     nav: [
